@@ -2,6 +2,14 @@
 
 This is a Game of Thrones inspired REST API game. You are responsible to create the engine of the game.
 
+## Decisions Explanation
+
+1. To add information for the client I structure the JSON responses in a object with "data" when the request is successful and "error" exaplaining why the request failed.
+
+2. I added HTTP status code so the cliente can work with this in his petitions results.
+
+3. I used a fixed TOKEN on .env file so it can be verified on sent headers and works fine as a basic authorization, whithout using any library or secret.
+
 ## Your tasks
 
 1. Implement the endpoints in **./src/api.js** file with the most suitable code for players and objects management REST API. You will find detailed instructions in this file.
