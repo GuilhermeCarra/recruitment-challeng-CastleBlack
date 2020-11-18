@@ -394,5 +394,20 @@ function findPlayer(req, res, next) {
   next();
 }
 
+// Check if object exists and save it on req
+function findObject(req, res, next) {
+  const findId = req.body.object ? parseInt(req.body.object) : parseInt(req.params.id);
+  const object = objects.find( ({id}) => id === findId );
+
+  if (typeof object === 'undefined') {
+    return res
+    .status(400)
+    .json({data: null, error: 'Bad Request: Object does not exist'});
+  }
+
+  req.body.object = object;
+  next();
+}
+
 
 module.exports = api;
