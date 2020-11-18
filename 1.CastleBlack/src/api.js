@@ -48,6 +48,39 @@ api.get("/players", checkPlayersDb, function(req, res) {
     .json({ data: players, error: null });
 });
 
+// ADD NEW PLAYER
+api.post("/players", checkPlayersDb, getNewPlayerId, function(req, res) {
+  if (req.body.name == null) {
+    return res
+      .status(400)
+      .json({ data: null, error: 'Bad Request: Missing name attribute' });
+  }
+
+  if (req.body.age == null) {
+    return res
+      .status(400)
+      .json({ data: null, error: 'Bad Request: Missing age attribute' });
+  }
+
+  if (req.body.health == null) {
+    return res
+      .status(400)
+      .json({ data: null, error: 'Bad Request: Missing health attribute' });
+  }
+
+  players = [...players, {
+    id: req.body.id,
+    name: req.body.name,
+    age: req.body.age,
+    health: req.body.health,
+    bag: [],
+  }]
+
+  return res
+    .status(201)
+    .json({ data: 'Player successfully registered!', error: null });
+});
+
 });
 
 module.exports = api;
