@@ -81,6 +81,13 @@ api.post("/players", checkPlayersDb, getNewPlayerId, function(req, res) {
     .json({ data: 'Player successfully registered!', error: null });
 });
 
+// GET PLAYER BY ID
+api.get("/players/:id", checkPlayersDb, findPlayer, function(req, res) {
+  return res
+    .status(200)
+    .json({data: req.body.player, error: null});
+});
+
 });
 
 module.exports = api;
