@@ -379,5 +379,20 @@ function checkObjectsDb(req, res, next) {
   next();
 }
 
+// Check if player exists and save it on req
+function findPlayer(req, res, next) {
+  const findId = parseInt(req.params.id);
+  const player = players.find( ({id}) => id === findId );
+
+  if (typeof player === 'undefined') {
+    return res
+    .status(400)
+    .json({data: null, error: 'Bad Request: Player does not exist'});
+  }
+
+  req.body.player = player;
+  next();
+}
+
 
 module.exports = api;
