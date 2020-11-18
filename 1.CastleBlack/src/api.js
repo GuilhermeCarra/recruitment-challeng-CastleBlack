@@ -330,5 +330,30 @@ api.patch("/players/:id/steal",
 });
 
 
+// RESURRECT A PLAYER
+api.patch("/players/:id/resurrect",
+  checkPlayersDb,
+  findPlayer,
+  function(req, res) {
+    const player = req.body.player;
+
+    if (player.health > 0) {
+      return res
+      .status(400)
+      .json({ data: null, error: `Bad Request: ${player.name} is not dead yet` });
+    }
+
+    players.find( ({id}) => id === player.id )    // Reset player health to 100
+      .health = 100;
+
+    return res
+      .status(200)
+      .json({
+        data: `${player.name} resurrected!`,
+        error: null
+      });
+});
+
+
 
 module.exports = api;
