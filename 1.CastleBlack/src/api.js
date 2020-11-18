@@ -78,7 +78,7 @@ api.post("/players", checkPlayersDb, getNewPlayerId, function(req, res) {
 
   return res
     .status(201)
-    .json({ data: 'Player successfully registered!', error: null });
+    .json({ data: `${req.body.name} successfully registered! ✅`, error: null });
 });
 
 // GET PLAYER BY ID
@@ -119,7 +119,7 @@ api.patch("/players/:id/equip",
 
     return res
     .status(200)
-    .json({ data: `${player.name} equipped ${object.name}`, error: null });
+    .json({ data: `${player.name} equipped ${object.name} 👊`, error: null });
 });
 
 // KILL A PLAYER
@@ -134,7 +134,7 @@ api.patch("/players/:id/kill",
 
     return res
     .status(200)
-    .json({ data: `${player.name} is dead`, error: null });
+    .json({ data: `${player.name} is dead 💀`, error: null });
 });
 
 // CREATE OBJECT
@@ -159,7 +159,7 @@ api.post("/objects", checkObjectsDb, getNewObjectId, function(req, res) {
 
   return res
     .status(201)
-    .json({ data: 'Object successfully registered!', error: null });
+    .json({ data: `${req.body.name} successfully created! ✅`, error: null });
 });
 
 // GET OBJECT BY ID
@@ -212,7 +212,7 @@ api.delete("/objects/:id",
 
     return res
       .status(200)
-      .json({data: `${req.body.object.name} was destroyed`, error: null});
+      .json({data: `${req.body.object.name} was destroyed 💥`, error: null});
 });
 
 // PLAYER PICK UP ITEM
@@ -241,7 +241,7 @@ api.patch("/players/:id/pick",
 
     return res
       .status(200)
-      .json({ data: `${player.name} picked up ${object.name}`, error: null });
+      .json({ data: `${player.name} picked up ${object.name} 👐`, error: null });
 });
 
 
@@ -282,7 +282,7 @@ api.patch("/players/:id/attack",
     return res
       .status(200)
       .json({
-        data: `${attacker.name} attacked ${target.name} with ${object.name} / ${target.name} health: ${health}`,
+        data: `${attacker.name} attacked ${target.name} with ${object.name} ⚔ / ${target.name} health: ${health} 💔`,
         error: null
       });
 });
@@ -324,7 +324,7 @@ api.patch("/players/:id/steal",
     return res
       .status(200)
       .json({
-        data: `${player.name} stole ${target.name}'s bag`,
+        data: `${player.name} stole ${target.name}'s bag 👜`,
         error: null
       });
 });
@@ -349,7 +349,7 @@ api.patch("/players/:id/resurrect",
     return res
       .status(200)
       .json({
-        data: `${player.name} resurrected!`,
+        data: `${player.name} resurrected! 🛐`,
         error: null
       });
 });
