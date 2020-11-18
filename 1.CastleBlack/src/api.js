@@ -245,6 +245,49 @@ api.patch("/players/:id/pick",
 });
 
 
+// PLAYER ATTACKS
+api.patch("/players/:id/attack",
+  checkObjectsDb,
+  checkPlayersDb,
+  findPlayer,
+  checkDead,
+  function(req, res) {
+    const attacker = req.body.player;
+    const object = objects.find( ({id}) => id === attacker.equipped )
+    const target = players.find( ({id}) => id === parseInt(req.body.target) )
+
+    if (typeof target === 'undefined') {
+      return res
+        .status(400)
+        .json({ data: null, error: 'Bad Request: Target player does not exist' });
+    }
+
+    if (typeof object === 'undefined') {
+      return res
+        .status(400)
+        .json({ data: null, error: 'Bad Request: Attacking player is not armed with an object' });
+    }
+
+    if (target.health <= 0) {
+      return res
+        .status(400)
+        .json({ data: null, error: `Bad Request: ${attacker.name} tries to attack ${target.name} but he/she is already dead` });
+    }
+
+    const health = target.health + object.value <= 0 ? 0 : target.health + object.value; // Calculate damage
+
+    players.find( ({id}) => id === target.id )    // Update player health after attack
+      .health = health;
+
+    return res
+      .status(200)
+      .json({
+        data: `${attacker.name} attacked ${target.name} with ${object.name} / ${target.name} health: ${health}`,
+        error: null
+      });
+});
+
+
 });
 
 module.exports = api;
