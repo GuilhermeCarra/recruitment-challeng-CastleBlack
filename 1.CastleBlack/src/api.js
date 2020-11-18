@@ -288,6 +288,47 @@ api.patch("/players/:id/attack",
 });
 
 
+// PLAYER STEALS A BAG
+api.patch("/players/:id/steal",
+  checkPlayersDb,
+  findPlayer,
+  checkDead,
+  function(req, res) {
+    const player = req.body.player;
+    const target = players.find( ({id}) => id === parseInt(req.body.target) )
+
+    if (typeof target === 'undefined') {
+      return res
+        .status(400)
+        .json({ data: null, error: 'Bad Request: Target player does not exist' });
+    }
+
+    if (target.bag.length === 0) {
+      return res
+        .status(400)
+        .json({ data: null, error: `Bad Request: Player tried to steal ${target.name}'s bag but it was empty` });
+    }
+
+    if (player.id === target.id) {
+      return res
+        .status(400)
+        .json({ data: null, error: 'Bad Request: Player cannot steal himself' });
+    }
+
+    players.find( ({id}) => id === player.id )    // Update player bag
+      .bag = player.bag.concat(target.bag);
+
+    players.find( ({id}) => id === target.id )    // Update stoled player bag
+      .bag = [];
+
+    return res
+      .status(200)
+      .json({
+        data: `${player.name} stole ${target.name}'s bag`,
+        error: null
+      });
 });
+
+
 
 module.exports = api;
