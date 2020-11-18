@@ -2,7 +2,7 @@ const { Router } = require("express");
 const api = Router();
 
 // This will be your data source
-const players = [
+var players = [
   { id: 1, name: "Jon Snow", age: 23, health: 100, bag: [1] },
   { id: 2, name: "Littlefinger", age: 35, health: 100, bag: [2] },
   { id: 3, name: "Daenerys Targaryen", age: 20, health: 100, bag: [3] },
