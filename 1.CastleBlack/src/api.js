@@ -19,9 +19,35 @@ var objects = [
 
 // GLOBAL MIDDLEWARE
 api.use(authMiddleware);    // Check Header Auth Bearer Token
+
 // EXAMPLE ENDPOINT: LIST ALL OBJECTS
-api.get("/objects", function(req, res) {
-  res.json(objects);
+api.get("/objects", checkObjectsDb, function(req, res) {
+
+  if(objects.length === 0) {
+    return res
+    .status(200)
+    .json({ data: null, error: 'No content: No objects registered' });
+  }
+
+  return res
+    .status(200)
+    .json({ data: objects, error: null });
+});
+
+// LIST ALL PLAYERS
+api.get("/players", checkPlayersDb, function(req, res) {
+
+  if(players.length === 0) {
+    return res
+    .status(200)
+    .json({ data: null, error: 'No content: No players registered' });
+  }
+
+  return res
+    .status(200)
+    .json({ data: players, error: null });
+});
+
 });
 
 module.exports = api;
