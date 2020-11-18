@@ -189,6 +189,32 @@ api.patch("/objects/:id/upgrade", checkObjectsDb, findObject, function(req, res)
     });
 });
 
+// DESTROY OBJECT
+api.delete("/objects/:id",
+  checkObjectsDb,
+  checkPlayersDb,
+  findObject,
+  function(req, res) {
+
+    objects = objects.filter((obj) => obj.id !== req.body.object.id);  // Remove the object from database
+
+
+    for (let i = 0; i < players.length; i++) {
+      let index = players[i].bag.indexOf(req.body.object.id)
+      if (index !== -1) players[i].bag.splice(index, 1);       // When the object is destroyed it's removed from players bags
+
+      if (players[i].equipped !== undefined) {
+        if (players[i].equipped === req.body.object.id) {     // Also remove it if user is armed with it
+          delete players[i].equipped;
+        }
+      }
+    }
+
+    return res
+      .status(200)
+      .json({data: `${req.body.object.name} was destroyed`, error: null});
+});
+
 });
 
 module.exports = api;
