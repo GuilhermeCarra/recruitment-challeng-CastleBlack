@@ -368,5 +368,16 @@ function checkPlayersDb(req, res, next) {
   next();
 }
 
+// Check if objects database is accessible
+function checkObjectsDb(req, res, next) {
+  if (typeof objects === 'undefined') {
+      return res
+      .status(500)
+      .json({ data: null, error: 'Server Error: Objects database not found' });
+    }
+
+  next();
+}
+
 
 module.exports = api;
