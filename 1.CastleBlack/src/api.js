@@ -137,6 +137,31 @@ api.patch("/players/:id/kill",
     .json({ data: `${player.name} is dead`, error: null });
 });
 
+// CREATE OBJECT
+api.post("/objects", checkObjectsDb, getNewObjectId, function(req, res) {
+  if (req.body.name == null) {
+    return res
+      .status(400)
+      .json({ data: null, error: 'Bad Request: Missing name attribute' });
+  }
+
+  if (req.body.value == null) {
+    return res
+      .status(400)
+      .json({ data: null, error: 'Bad Request: Missing value attribute' });
+  }
+
+  objects = [...objects, {
+    id: req.body.id,
+    name: req.body.name,
+    value: req.body.value,
+  }]
+
+  return res
+    .status(201)
+    .json({ data: 'Object successfully registered!', error: null });
+});
+
 });
 
 module.exports = api;
