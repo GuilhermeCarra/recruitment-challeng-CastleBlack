@@ -215,6 +215,36 @@ api.delete("/objects/:id",
       .json({data: `${req.body.object.name} was destroyed`, error: null});
 });
 
+// PLAYER PICK UP ITEM
+api.patch("/players/:id/pick",
+  checkPlayersDb,
+  checkObjectsDb,
+  findPlayer,
+  findObject,
+  checkDead,
+  function(req, res) {
+    const object = req.body.object;
+    const player = req.body.player;
+
+    for (let player of players) {
+      if (player.bag.includes(object.id)) {
+        return res
+        .status(400)
+        .json({ data: null, error: 'Bad Request: This object already has an owner' });
+      }
+    }
+
+    let bag = [...player.bag, object.id]         // Putting object in the bag
+
+    players.find( ({id}) => id === player.id )   // Updating player bag
+      .bag = bag;
+
+    return res
+      .status(200)
+      .json({ data: `${player.name} picked up ${object.name}`, error: null });
+});
+
+
 });
 
 module.exports = api;
