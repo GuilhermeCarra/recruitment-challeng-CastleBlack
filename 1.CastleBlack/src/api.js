@@ -409,5 +409,23 @@ function findObject(req, res, next) {
   next();
 }
 
+// Sort players array by ID and search for a new available ID
+function getNewPlayerId(req, res, next) {
+  if (players[0].id != 1) {
+    req.body.id = 1;
+  next();
+  }
+
+  players.sort((a,b) => a.id - b.id);
+  for (let i = 0; i < players.length-1; i++) {
+    if (players[i].id - players[i+1].id !== -1) {
+      req.body.id = players[i].id + 1;
+      next();
+    }
+  }
+  req.body.id = players[players.length-1].id + 1;
+  next();
+}
+
 
 module.exports = api;
