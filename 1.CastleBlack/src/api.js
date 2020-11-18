@@ -427,5 +427,32 @@ function getNewPlayerId(req, res, next) {
   next();
 }
 
+// Sort objects array by ID to find an available Id for new object
+function getNewObjectId(req, res, next) {
+  if (objects[0].id != 1) {
+    req.body.id = 1;
+  next();
+  }
+
+  objects.sort((a,b) => a.id - b.id);
+  for (let i = 0; i < objects.length-1; i++) {
+    if (objects[i].id - objects[i+1].id !== -1) {
+      req.body.id = objects[i].id + 1;
+      next();
+    }
+  }
+  req.body.id = objects[objects.length-1].id + 1;
+  next();
+}
+
+// Check if player is dead before doing an action
+function checkDead(req, res, next) {
+  if (req.body.player.health <= 0) {
+    return res
+    .status(400)
+    .json({data: null, error: `Bad Request: Acting player ${req.body.player.name} is dead`});
+  }
+  next();
+}
 
 module.exports = api;
