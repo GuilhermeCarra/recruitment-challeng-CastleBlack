@@ -162,6 +162,13 @@ api.post("/objects", checkObjectsDb, getNewObjectId, function(req, res) {
     .json({ data: 'Object successfully registered!', error: null });
 });
 
+// GET OBJECT BY ID
+api.get("/objects/:id", checkObjectsDb, findObject, function(req, res) {
+  return res
+    .status(200)
+    .json({data: req.body.object, error: null});
+});
+
 });
 
 module.exports = api;
