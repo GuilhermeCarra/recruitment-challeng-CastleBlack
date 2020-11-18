@@ -355,5 +355,18 @@ api.patch("/players/:id/resurrect",
 });
 
 
+// Middlewares
+
+// Check if players database is accessible
+function checkPlayersDb(req, res, next) {
+  if (typeof players === 'undefined') {
+      return res
+      .status(500)
+      .json({ data: null, error: 'Server Error: Players database not found' });
+    }
+
+  next();
+}
+
 
 module.exports = api;
