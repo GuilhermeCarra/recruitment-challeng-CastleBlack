@@ -169,6 +169,26 @@ api.get("/objects/:id", checkObjectsDb, findObject, function(req, res) {
     .json({data: req.body.object, error: null});
 });
 
+// UPGRADE OBJECTS
+api.patch("/objects/:id/upgrade", checkObjectsDb, findObject, function(req, res) {
+  if (req.body.value == null) {
+    return res
+      .status(400)
+      .json({ data: null, error: 'Bad Request: Missing value attribute' });
+  }
+
+  const newValue = parseInt(req.body.value) + parseInt(req.body.object.value)
+
+  objects.find(({id}) => id === req.body.object.id).value += parseInt(req.body.value); // Change item value
+
+  return res
+    .status(200)
+    .json({
+      data: `${req.body.object.name} value was changed to ${newValue}`,
+      error: null
+    });
+});
+
 });
 
 module.exports = api;
