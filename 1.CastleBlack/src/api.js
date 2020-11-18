@@ -122,6 +122,21 @@ api.patch("/players/:id/equip",
     .json({ data: `${player.name} equipped ${object.name}`, error: null });
 });
 
+// KILL A PLAYER
+api.patch("/players/:id/kill",
+  checkPlayersDb,
+  findPlayer,
+  function(req, res) {
+    const player = req.body.player
+
+    players.find( ({id}) => id === player.id )
+      .health = 0;
+
+    return res
+    .status(200)
+    .json({ data: `${player.name} is dead`, error: null });
+});
+
 });
 
 module.exports = api;
