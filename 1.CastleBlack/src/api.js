@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const api = Router();
+const authMiddleware = require('./middlewares/auth.js');
 
 // This will be your data source
 var players = [
@@ -16,6 +17,8 @@ var objects = [
   { id: 5, name: "staff", value: -20 }
 ];
 
+// GLOBAL MIDDLEWARE
+api.use(authMiddleware);    // Check Header Auth Bearer Token
 // EXAMPLE ENDPOINT: LIST ALL OBJECTS
 api.get("/objects", function(req, res) {
   res.json(objects);
