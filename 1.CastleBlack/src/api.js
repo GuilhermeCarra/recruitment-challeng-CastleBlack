@@ -88,6 +88,40 @@ api.get("/players/:id", checkPlayersDb, findPlayer, function(req, res) {
     .json({data: req.body.player, error: null});
 });
 
+// ARM PLAYER
+api.patch("/players/:id/equip",
+  checkPlayersDb,
+  checkObjectsDb,
+  findPlayer,
+  findObject,
+  checkDead,
+  function(req, res) {
+    const object = req.body.object;
+    const player = req.body.player;
+
+    if (!player.bag.includes(object.id)) {
+      return res
+      .status(400)
+      .json({ data: null, error: 'Bad Request: Player does not have this item in your bag' });
+    }
+
+    let bag = player.bag.filter((obj) => obj !== object.id) // Removing the item from the bag
+
+    if (player.equipped !== undefined) {
+      bag.push(player.equipped)                             // Return to the bag if player was armed with an object previously
+    }
+
+    players.find( ({id}) => id === player.id )              // Updating player equipped item
+      .equipped = object.id;
+
+    players.find( ({id}) => id === player.id )              // Updating player bag
+      .bag = bag;
+
+    return res
+    .status(200)
+    .json({ data: `${player.name} equipped ${object.name}`, error: null });
+});
+
 });
 
 module.exports = api;
